@@ -1,0 +1,836 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* 顶部横幅（云层背景区域）
+   参考民航局风格：云朵从顶部自然向下渐变，底部融入白色内容区 */
+.banner {
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: visible;
+  background-image: url("bg.jpg");
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+  /* 增加banner高度，让云朵有更多空间渐变 */
+  padding-bottom: 50px;
+}
+
+/* 渐变蒙层：顶部淡蓝天（让云朵清晰可见），向下逐渐过渡到透明白色，底部完全融入内容区 */
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 80, 160, 0.15) 0%,
+    rgba(30, 100, 180, 0.25) 25%,
+    rgba(60, 130, 200, 0.2) 50%,
+    rgba(255, 255, 255, 0.3) 75%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  z-index: 0;
+}
+
+.banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-title {
+  font-size: 34px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 1px 2px 6px rgba(0, 40, 100, 0.4);
+  padding-left: 0;
+  border-left: none;
+}
+
+.banner-search {
+  display: flex;
+  gap: 0;
+}
+
+.banner-search input {
+  width: 300px;
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  outline: none;
+  border-radius: 2px 0 0 2px;
+  color: #333;
+}
+
+.banner-search input::placeholder {
+  color: #999;
+}
+
+.banner-search button {
+  height: 38px;
+  padding: 0 25px;
+  background: #f57c00;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 0 2px 2px 0;
+  transition: background 0.2s;
+}
+
+.banner-search button:hover {
+  background: #e56900;
+}
+
+/* 导航栏 — 去掉底部橙线，采用蓝色块按钮样式 */
+.navbar {
+  background: transparent;
+  margin-top: 35px;
+  position: relative;
+  z-index: 1;
+}
+
+/* 去掉底部橙色线条 */
+.navbar::before {
+  display: none;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  position: relative;
+  gap: 2px;
+}
+
+.nav-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.nav-item a {
+  display: block;
+  padding: 14px 20px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  background: rgba(10, 80, 160, 0.7);
+  transition: background 0.2s;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nav-item a:hover {
+  background: rgba(245, 124, 0, 0.9);
+}
+
+/* 选中状态：橙黄色渐变，参考民航局首页按钮 */
+.nav-item.active a {
+  background: linear-gradient(180deg, #ff9800 0%, #f57c00 100%);
+  color: #fff;
+  font-weight: 600;
+  position: relative;
+  z-index: 3;
+  text-shadow: none;
+}
+
+.nav-item + .nav-item::before {
+  display: none;
+}
+
+/* 主内容区 */
+.main {
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 0 20px;
+  min-height: 500px;
+  position: relative;
+  z-index: 1;
+}
+
+/* 飞机水印：右下角静态，半透明 */
+.main::before {
+  content: "";
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  height: 320px;
+  background-image: url("plane.jpg");
+  background-size: contain;
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  opacity: 0.18;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 板块标题 — 改为民航局风格的蓝色标签样式
+   左边蓝色矩形块，白色文字，像标签页一样 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 1;
+  /* 底部细线，灰色很淡 */
+  border-bottom: 1px solid #e8e8e8;
+  padding-bottom: 6px;
+}
+
+.section-title {
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  background: #0a5bab;
+  padding: 8px 18px;
+  position: relative;
+  /* 让标签底部与分隔线对齐 */
+  margin-bottom: -7px;
+  margin-left: 0;
+  border-left: none;
+}
+
+.section-title::before {
+  display: none;
+}
+
+.section-more {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: -7px;
+}
+
+.section-more:hover {
+  color: #f57c00;
+}
+
+/* 简报卡片列表（首页） */
+.issue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.issue-card {
+  border: 1px solid #e6e6e6;
+  padding: 20px 24px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.issue-card:hover {
+  box-shadow: 0 3px 12px rgba(10, 91, 171, 0.12);
+  border-color: #0a5bab;
+}
+
+.issue-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.issue-card-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: #0a5bab;
+}
+
+.issue-card:hover .issue-card-title {
+  color: #f57c00;
+}
+
+.issue-card-date {
+  font-size: 13px;
+  color: #999;
+}
+
+.issue-card-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.issue-card-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.issue-card-meta .num {
+  color: #f57c00;
+  font-weight: bold;
+}
+
+.issue-card-summary {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 事件列表（分类页） */
+.event-list {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.event-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 16px 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.event-item:hover {
+  background: #f5faff;
+}
+
+.event-date {
+  flex-shrink: 0;
+  width: 85px;
+  text-align: center;
+  padding: 5px 0;
+  background: #f0f6fc;
+  border-radius: 2px;
+  font-size: 13px;
+  color: #0a5bab;
+  font-weight: 500;
+}
+
+.event-item:hover .event-date {
+  background: #0a5bab;
+  color: #fff;
+}
+
+.event-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.event-title {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.event-item:hover .event-title {
+  color: #0a5bab;
+}
+
+.event-desc {
+  font-size: 13px;
+  color: #777;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.event-source {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.event-source-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  background: #e8f0fe;
+  color: #0a5bab;
+  border-radius: 2px;
+  margin-right: 6px;
+  font-size: 11px;
+}
+
+/* 详情页 */
+.detail-container {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  padding: 40px 55px;
+  position: relative;
+  z-index: 1;
+}
+
+.detail-header {
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+}
+
+.detail-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #0a5bab;
+  margin-bottom: 12px;
+}
+
+.detail-meta {
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.detail-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-section {
+  margin-bottom: 35px;
+}
+
+.detail-section-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: #fff;
+  background: #0a5bab;
+  padding: 7px 15px;
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.detail-subsection {
+  margin-bottom: 20px;
+}
+
+.detail-subsection-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 3px solid #f57c00;
+}
+
+.detail-overview {
+  background: #f7faff;
+  padding: 18px 25px;
+  border-left: 3px solid #0a5bab;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #444;
+  text-indent: 2em;
+}
+
+.detail-event-item {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed #eee;
+}
+
+.detail-event-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.detail-event-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.detail-event-content {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #444;
+  text-indent: 2em;
+}
+
+.detail-event-source {
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+  text-align: right;
+}
+
+.detail-event-source a {
+  color: #0a5bab;
+}
+
+.detail-event-source a:hover {
+  color: #f57c00;
+  text-decoration: underline;
+}
+
+/* 态势分析：纯文字段落 */
+.detail-analysis {
+  font-size: 14px;
+  line-height: 2;
+  color: #333;
+  text-indent: 2em;
+  margin-bottom: 12px;
+  padding: 0 5px;
+}
+
+.detail-appendix-list {
+  padding-left: 20px;
+}
+
+.detail-appendix-list li {
+  list-style: disc;
+  font-size: 14px;
+  line-height: 2;
+  color: #555;
+}
+
+/* 单条事件详情弹窗 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #fff;
+  width: 700px;
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  background: #0a5bab;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.modal-close {
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.modal-close:hover {
+  opacity: 1;
+}
+
+.modal-body {
+  padding: 25px 30px;
+  overflow-y: auto;
+}
+
+.modal-event-meta {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #888;
+}
+
+.modal-event-summary {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #333;
+  text-indent: 2em;
+  margin-bottom: 20px;
+}
+
+.modal-source {
+  background: #f5faff;
+  padding: 12px 15px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.modal-source-label {
+  font-weight: bold;
+  color: #0a5bab;
+  margin-bottom: 6px;
+}
+
+.modal-source a {
+  color: #0a5bab;
+  word-break: break-all;
+}
+
+.modal-source a:hover {
+  color: #f57c00;
+  text-decoration: underline;
+}
+
+/* 返回按钮 */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #0a5bab;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.back-btn:hover {
+  color: #f57c00;
+}
+
+/* 搜索无结果 */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  position: relative;
+  z-index: 1;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+/* 页脚 */
+.footer {
+  background: #0a5bab;
+  padding: 22px 0;
+  margin-top: 50px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  position: relative;
+  z-index: 1;
+  border-top: none;
+}
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 768px) {
+  .banner-inner {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px 15px 0 15px;
+    align-items: flex-start;
+  }
+
+  .banner-title {
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+
+  .banner-search {
+    width: 100%;
+  }
+
+  .banner-search input {
+    width: 100%;
+    flex: 1;
+  }
+
+  .banner-search button {
+    padding: 0 18px;
+    font-size: 14px;
+  }
+
+  .navbar {
+    margin-top: 25px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-inner {
+    padding: 0 10px;
+    min-width: 600px;
+  }
+
+  .nav-item a {
+    padding: 12px 10px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    background: rgba(10, 80, 160, 0.75);
+  }
+
+  .main {
+    padding: 0 15px;
+    margin: 20px auto;
+  }
+
+  .section-title {
+    font-size: 16px;
+    padding: 6px 14px;
+  }
+
+  .section-more {
+    font-size: 12px;
+  }
+
+  .issue-card {
+    padding: 16px 18px;
+  }
+
+  .issue-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .issue-card-title {
+    font-size: 15px;
+  }
+
+  .issue-card-date {
+    font-size: 12px;
+  }
+
+  .issue-card-meta {
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    font-size: 12px;
+  }
+
+  .issue-card-summary {
+    font-size: 13px;
+    -webkit-line-clamp: 3;
+  }
+
+  .event-date {
+    width: 70px;
+    font-size: 12px;
+  }
+
+  .event-title {
+    font-size: 14px;
+  }
+
+  .event-desc {
+    -webkit-line-clamp: 2;
+  }
+
+  .detail-container {
+    padding: 20px 18px;
+  }
+
+  .detail-title {
+    font-size: 20px;
+  }
+
+  .detail-meta {
+    flex-direction: column;
+    gap: 5px;
+    font-size: 12px;
+  }
+
+  .detail-section-title {
+    font-size: 16px;
+  }
+
+  .detail-subsection-title {
+    font-size: 14px;
+  }
+
+  .detail-overview,
+  .detail-event-content,
+  .detail-analysis {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .detail-overview {
+    padding: 12px 14px;
+  }
+
+  .modal-box {
+    width: 92%;
+    max-height: 75vh;
+  }
+
+  .modal-body {
+    padding: 18px 20px;
+  }
+
+  .modal-title {
+    font-size: 15px;
+  }
+
+  .modal-event-summary {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .footer {
+    font-size: 12px;
+    padding: 15px 10px;
+  }
+
+  .main::before {
+    width: 280px;
+    height: 180px;
+    opacity: 0.12;
+  }
+}

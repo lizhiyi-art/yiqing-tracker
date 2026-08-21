@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>互联网开源信息摘编</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 顶部横幅 -->
+  <div class="banner">
+    <div class="banner-inner">
+      <div class="banner-title">互联网开源信息摘编</div>
+      <div class="banner-search">
+        <input type="text" id="searchInput" placeholder="搜索事件、期数、关键词...">
+        <button id="searchBtn">搜索</button>
+      </div>
+    </div>
+    <!-- 导航栏 -->
+    <div class="navbar">
+      <div class="nav-inner">
+        <div class="nav-item active" data-nav="home"><a href="#home" data-nav="home">首页</a></div>
+        <div class="nav-item" data-nav="drone"><a href="#category/drone" data-nav="drone">无人机相关事件</a></div>
+        <div class="nav-item" data-nav="civil"><a href="#category/civil" data-nav="civil">民航公安·机场机上安保事件</a></div>
+        <div class="nav-item" data-nav="diplomacy"><a href="#category/diplomacy" data-nav="diplomacy">外交高访（涉飞机出行）</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主内容 -->
+  <div class="main" id="main"></div>
+
+  <!-- 页脚 -->
+  <div class="footer"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
